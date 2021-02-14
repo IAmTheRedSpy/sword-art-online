@@ -14,11 +14,12 @@ LIGHTSPEED = 299792458 # m/s
 
 cute.theme("DarkBlack")
 
-layout = [  [cute.Text("Press the button when you're ready")],
-            [cute.Text("The button will go dark then after some time it will light up for you to click")],
-            [cute.Text("Afterwards, your reaction time will be compared to the speed of light!")],
+layout = [  [cute.Text("Press the button when you're ready. The button will go dark.")],
+            [cute.Text("Then, after some time, it will light up for you to click.")],
+            [cute.Text("Your reaction time to click the button will be compared to the speed of light!")],
             [cute.Button("Ready", key="-BUTTON-"), cute.Quit()],
-            [cute.Text("Results will appear here", key="-RES-")]]
+            [cute.Text("Results will appear here", key="-RES1-")],
+            [cute.Text("", key="-RES2-")]]
 
 window = cute.Window("The Speed Of Light", layout)
 
@@ -32,7 +33,7 @@ while True:
 
     if state[0] == State.PREPARING:
         # Timer has elapsed, start the challenge
-        window["-BUTTON-"].update(text = "Click!", disabled = False)
+        window["-BUTTON-"].update(text = "Click!", disabled = False, button_color = cute.theme_button_color())
         state.pop(0)
         state.append(State.ACTIVE)
         # start timer to count time taken
@@ -44,7 +45,7 @@ while True:
     if event == "-BUTTON-":
         if state[0] == State.READY:
             # User is ready
-            window["-BUTTON-"].update(text = "Wait", disabled = True)
+            window["-BUTTON-"].update(text = "Wait", disabled = True, button_color = ("black", "gray"))
             state.pop(0)
             state.append(State.INACTIVE)
             # start a timer to wait before changing button to "Click!"
@@ -59,7 +60,8 @@ while True:
             reactionTime = time.perf_counter() - startTime
             lightDistance = (reactionTime * LIGHTSPEED)/1000
 
-            window["-RES-"].update("In the {0:n} seconds it took you to click the button, light has traveled {1:n} kilometres".format(reactionTime, lightDistance))
+            window["-RES1-"].update("In the {0:n} seconds it took you to click the button,".format(reactionTime))
+            window["-RES2-"].update("light has traveled {0:n} kilometres".format(lightDistance))
             window["-BUTTON-"].update("Ready")
             state.pop(0)
             state.append(State.READY)
