@@ -1,6 +1,7 @@
 import PySimpleGUIQt as cute
 import threading
 import time
+import random
 from enum import Enum
 
 class State(Enum):
@@ -11,6 +12,7 @@ class State(Enum):
 state = [State.READY] # must be a mutable type
 startTime = 0.0
 LIGHTSPEED = 299792458 # m/s
+random.seed()
 
 cute.theme("DarkBlack")
 
@@ -49,7 +51,8 @@ while True:
             state.pop(0)
             state.append(State.INACTIVE)
             # start a timer to wait before changing button to "Click!"
-            t = threading.Timer(2.0, startGame)
+            timeToWait = random.uniform(1, 3)
+            t = threading.Timer(timeToWait, startGame)
             t.start()
 
         if state[0] == State.ACTIVE:
