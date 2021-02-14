@@ -20,7 +20,7 @@ layout = [  [cute.Text("Press the button when you're ready. The button will go d
             [cute.Text("Then, after some time, it will light up for you to click.")],
             [cute.Text("Your reaction time to click the button will be compared to the speed of light!")],
             [cute.Button("Ready", key="-BUTTON-"), cute.Quit()],
-            [cute.Text("Results will appear here", key="-RES1-")],
+            [cute.Text("Results will appear here.", key="-RES1-")],
             [cute.Text("", key="-RES2-")]]
 
 window = cute.Window("The Speed Of Light", layout)
@@ -75,7 +75,7 @@ while True:
             lightDistance = (reactionTime * LIGHTSPEED)/1000
 
             window["-RES1-"].update("In the {0:n} seconds it took you to click the button,".format(reactionTime))
-            window["-RES2-"].update("light has traveled {0:n} kilometres".format(lightDistance))
+            window["-RES2-"].update("light has traveled {0:n} kilometres.".format(lightDistance))
             window["-BUTTON-"].update("Ready")
             state.pop(0)
             state.append(State.READY)
