@@ -35,7 +35,7 @@ while True:
 
     if state[0] == State.PREPARING:
         # Timer has elapsed, start the challenge
-        window["-BUTTON-"].update(text = "Click!", disabled = False, button_color = cute.theme_button_color())
+        window["-BUTTON-"].update(text = "Click!", button_color = cute.theme_button_color())
         state.pop(0)
         state.append(State.ACTIVE)
         # start timer to count time taken
@@ -47,13 +47,24 @@ while True:
     if event == "-BUTTON-":
         if state[0] == State.READY:
             # User is ready
-            window["-BUTTON-"].update(text = "Wait", disabled = True, button_color = ("black", "gray"))
+            window["-BUTTON-"].update(text = "Wait", button_color = ("black", "gray"))
             state.pop(0)
             state.append(State.INACTIVE)
             # start a timer to wait before changing button to "Click!"
             timeToWait = random.uniform(1, 3)
             t = threading.Timer(timeToWait, startGame)
             t.start()
+            continue
+
+        if state[0] in (State.INACTIVE, State.PREPARING):
+            # User clicked too fast. Reset for another try
+            t.cancel()
+            window["-RES1-"].update("You clicked too soon! Try again.")
+            window["-RES2-"].update("")
+            window["-BUTTON-"].update(text = "Ready", button_color = cute.theme_button_color())
+            state.pop(0)
+            state.append(State.READY)
+            continue
 
         if state[0] == State.ACTIVE:
             # User clicked the button, the challenge is over
@@ -68,6 +79,7 @@ while True:
             window["-BUTTON-"].update("Ready")
             state.pop(0)
             state.append(State.READY)
+            continue
 
 
 window.close()
