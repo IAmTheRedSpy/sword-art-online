@@ -31,7 +31,6 @@ def startGame():
 
 while True:
     event, values = window.read(timeout=1000)
-    print(event, values, state)
 
     if state[0] == State.PREPARING:
         # Timer has elapsed, start the challenge
